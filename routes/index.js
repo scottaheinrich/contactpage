@@ -7,28 +7,24 @@ var transporter = nodemailer.createTransport('smtps://scottaheinrich');
 
 // Get /
 router.get('/', function(req, res, next) {
-  return res.render('index');
+  return res.render('index', { message:""});
 });
 
 router.get('/email', function (req, res, next) {
-  //setup email data with unicode symbols
-  console.log(req.body.message)
-  var mailOptions = {
-    from: req.body.email,
+  sendmail({
+    from: 'scottaheinrich@gmail.com',
     to: 'scottaheinrich@gmail.com',
-    subject: "Hello",
-    html: req.body.email,
-    text: req.body.message
-  };
-  // send mail with defined transport object
-  transporter.sendMail(mailOptions, function(error, info){
-    if(error){
-      return res.render('index', (_layoutFile: 'layouts/main', title: ''));
-      return console.log(error);
+    subject: req.body.name,
+    hmtl: req.body.message,
+  }, function(err, reply) {
+    if(err){
+      return res.render('index', {message: "Error"});
+    }else{
+      return res.render('index', {message: "Success"});
     }
-    return res.render('index', (_layoutFile: 'layouts/main', title: ''));
+    console.log(err && err.stack);
+    console.dir(reply);
   });
-
-})
+});
 
 module.exports = router;
