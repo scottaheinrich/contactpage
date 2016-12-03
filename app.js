@@ -1,4 +1,4 @@
-var expres = require('express');
+var express = require('express');
 var bodyParser = require('body-parser');
 var engine = require('ejs-mate');
 var app = express();
