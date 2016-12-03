@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var sendmail = require('sendmail')();
+var nodemailer = require('noemailer');
 
 //create reusable transporter object usingthe default smtp
-var transporter = nodemailer.createTransport('smtps://scottaheinrich');
+var transporter = nodemailer.createTransport('smtps://scottaheinrich@gmail.com:pass@smtp.gmail.com');
 
 // Get /
 router.get('/', function(req, res, next) {
@@ -11,20 +12,24 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/email', function (req, res, next) {
-  sendmail({
+  //setup email data with unicode symbols
+  console.log(req.body.message)
+  var mailOptions = {
     from: 'scottaheinrich@gmail.com',
     to: 'scottaheinrich@gmail.com',
-    subject: req.body.name,
-    hmtl: req.body.message,
-  }, function(err, reply) {
-    if(err){
-      return res.render('index', {message: "Error"});
-    }else{
-      return res.render('index', {message: "Success"});
+    subject: "Hello",
+    email: 'scottaheinrich@gmail.com',
+    text: req.body.message
+  };
+  // send mail with defined transport object
+  transporter.sendMail(mailOptions, function(error, info){
+    if(error){
+      return res.render('index', {message: "error"}));
+      return console.log(error);
     }
-    console.log(err && err.stack);
-    console.dir(reply);
+    return res.render('index', { message: "Success"}));
   });
-});
+
+})
 
 module.exports = router;
