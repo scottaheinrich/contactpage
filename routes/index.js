@@ -1,5 +1,4 @@
 var express = require('express');
-var app = require('express')();
 var router = express.Router();
 var nodemailer = require('nodemailer');
 
@@ -8,7 +7,7 @@ var transporter = nodemailer.createTransport('smtps://scottaheinrich');
 
 // Get /
 router.get('/', function(req, res, next) {
-  return res.render('index', (_layoutFile: 'layouts/main', title))
+  return res.render('index', (_layoutFile: 'layouts/main', title: 'Contact Us', message: "" ));
 });
 
 router.get('/email', function (req, res, next) {
@@ -17,6 +16,19 @@ router.get('/email', function (req, res, next) {
   var mailOptions = {
     from: req.body.email,
     to: 'scottaheinrich@gmail.com',
-    subject: ""
-  }
+    subject: "Hello",
+    email: req.body.email,
+    text: req.body.message
+  };
+  // send mail with defined transport object
+  transporter.sendMail(mailOptions, function(error, info){
+    if(error){
+      return res.render('index', (_layoutFile: 'layouts/main', title: ''));
+      return console.log(error);
+    }
+    return res.render('index', (_layoutFile: 'layouts/main', title: ''));
+  });
+
 })
+
+module.exports = router;
