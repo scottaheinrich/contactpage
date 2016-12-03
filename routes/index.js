@@ -7,7 +7,7 @@ var transporter = nodemailer.createTransport('smtps://scottaheinrich');
 
 // Get /
 router.get('/', function(req, res, next) {
-  return res.render('index', (_layoutFile: 'layouts/main', title: 'Contact Us', message: "" ));
+  return res.render('index', (_layoutFile: 'layouts/main', title: 'Contact Us', message: ''));
 });
 
 router.get('/email', function (req, res, next) {

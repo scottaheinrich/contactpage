@@ -1,13 +1,12 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var engine = require('ejs-mate');
 var app = express();
 
 //serve static files from /public
 app.use(express.static(__dirname + '/public'));
 
 //use ejs-locals for all ejs templates
-app.engine('ejs', engine);
+//app.engine('ejs', engine);
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
